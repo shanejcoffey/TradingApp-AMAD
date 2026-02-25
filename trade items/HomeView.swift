@@ -6,18 +6,33 @@
 //
 
 import SwiftUI
+import FirebaseAuth
 
 struct HomeView: View {
+    
     @State var Username: String
+    @Environment(\.dismiss) private var dismiss
+    
+    
     var body: some View {
         Text("Welcome back \(Username)")
             .font(.largeTitle)
         
-        
-        
-        
+        Button("Sign out") {
+            signOut()
+        }
+        .tint(.red)
         
         Spacer()
+    }
+    
+    func signOut() {
+        do {
+            try Auth.auth().signOut()
+            dismiss()
+        } catch {
+            print("Sign out error: \(error.localizedDescription)")
+        }
     }
 }
 

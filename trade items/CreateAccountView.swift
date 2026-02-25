@@ -6,38 +6,46 @@
 //
 
 import SwiftUI
+import FirebaseAuth
 
 struct CreateAccountView: View {
-    @State var username = ""
+    @State var email = ""
     @State var password = ""
+    @State var errorMessage = ""
     @State var alertON = false
     var body: some View {
         NavigationStack{
             VStack {
                 
-                
                 Text("Trading App")
                     .font(.largeTitle)
+                
                 Spacer()
                 
                 Text("Create Account")
                     .font(.title)
-                HStack{
-                    VStack{
-                        TextField("Input new username", text: $username)
+                
+                HStack {
+                    VStack {
+                        TextField("Input new email", text: $email)
                             .offset(x: 60)
-                        TextField("Input new password", text: $password)
-                            .offset(x:60)
+                            .autocorrectionDisabled()
+                            .autocapitalization(.none)
+                            .keyboardType(.emailAddress)
                         
+                        SecureField("Input new password", text: $password)
+                            .offset(x: 60)
+                            .autocorrectionDisabled()
+                            .autocapitalization(.none)
                     }
+                    
                     Button {
                         if password.count < 6 {
                             alertON = true
-                        }else{
-                            //new acc code here
-                            
-                            
-                            
+                        } else {
+                            Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
+                                errorMessage = String(describing: error)
+                            }
                         }
                     } label: {
                         ZStack{
@@ -50,7 +58,9 @@ struct CreateAccountView: View {
                     }
                 }
                 
-                
+                if errorMessage != "nil" && !errorMessage.isEmpty {
+                    Text(errorMessage)
+                }
                 
                 Spacer()
                 Spacer()
