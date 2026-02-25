@@ -66,7 +66,7 @@ struct ContentView: View {
             }
             .padding()
             .navigationDestination(isPresented: $isLoggedIn) {
-                HomeView(Username: email)
+                HomeView()
             }
             .onAppear() {
                 if Auth.auth().currentUser != nil {
@@ -99,3 +99,14 @@ struct ContentView: View {
 #Preview {
     ContentView()
 }
+
+
+/*
+ {
+ qopejr:
+    Item
+    Item
+ rwrwerwerf:
+    Item
+ }
+ */

@@ -10,15 +10,18 @@ import FirebaseAuth
 
 struct HomeView: View {
     
-    @State var Username: String
+    var user: User? {
+        Auth.auth().currentUser
+    }
     @Environment(\.dismiss) private var dismiss
     
-    
     var body: some View {
-        NavigationStack{
-            VStack{
-                Text("Welcome back \(Username)")
+        NavigationStack {
+            VStack {
+                
+                Text("Welcome back \(user?.email ?? "uh oh")")
                     .font(.largeTitle)
+                Text("Id: \(user?.uid ?? "uh oh")")
                 Button("sign out") {
                     signOut()
                 }
@@ -65,5 +68,5 @@ struct HomeView: View {
 }
 
 #Preview {
-    HomeView(Username: "blob")
+    HomeView()
 }
