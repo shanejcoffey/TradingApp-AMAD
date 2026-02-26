@@ -13,6 +13,7 @@ struct CreateAccountView: View {
     @State var password = ""
     @State var errorMessage = ""
     @State var alertON = false
+    @State var alertConfirm = false
     var body: some View {
         NavigationStack{
             VStack {
@@ -46,6 +47,7 @@ struct CreateAccountView: View {
                             Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
                                 errorMessage = String(describing: error)
                             }
+                            alertConfirm = true
                         }
                     } label: {
                         ZStack{
@@ -68,6 +70,9 @@ struct CreateAccountView: View {
             .padding()
         }
         .alert("Password must be at least 6 characters", isPresented: $alertON) {
+            
+        }
+        .alert("Account created", isPresented: $alertConfirm) {
             
         }
     }

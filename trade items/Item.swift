@@ -18,6 +18,7 @@ enum ItemCategory: String {
     case clothing = "Clothing"
     case technology = "Technology"
     case sports = "Sports"
+    
 }
 
 class Item {
