@@ -8,8 +8,10 @@
 import SwiftUI
 
 struct SearchView: View {
+    @State var alertON = false
     @State var searchIN = ""
-    @State var estValueSearch = 0.0
+    @State var estValueSearch = 1.0
+    @State var categoryIN = "sports"
     var body: some View {
         NavigationStack{
             
@@ -22,16 +24,57 @@ struct SearchView: View {
                 }
             Text("Filter by:")
             HStack{
-                Text("Estimated Value: \(estValueSearch, specifier: "%.0f")")
+                Text("Estimated Value: $\(estValueSearch, specifier: "%.0f")")
                 Stepper("", value: $estValueSearch)
             }
-            Slider(value: $estValueSearch, in: 1...100, step: 1.0 ) {
+            Slider(value: $estValueSearch, in: 1...100, step: 1.0 ) {_ in 
                 
             }
                 
-                
 
-            
+            Text("Select category:")
+                .font(.title2)
+            Text("Current: \(categoryIN)")
+            ScrollView {
+                Button {
+                    categoryIN = "sports"
+                } label: {
+                    ZStack{
+                        RoundedRectangle(cornerSize: CGSize(width: 10.0, height: 15.0))
+                            .frame(width: 250,height: 35)
+                            .foregroundStyle(.blue)
+                        Text("Sports")
+                            .foregroundStyle(.red)
+                            .font(.title)
+                    }
+                }
+                
+                Button {
+                    categoryIN = "technology"
+                } label: {
+                    ZStack{
+                        RoundedRectangle(cornerSize: CGSize(width: 10.0, height: 15.0))
+                            .frame(width: 250,height: 35)
+                            .foregroundStyle(.blue)
+                        Text("Technology")
+                            .foregroundStyle(.red)
+                            .font(.title)
+                    }
+                }
+                
+                Button {
+                    categoryIN = "clothing"
+                } label: {
+                    ZStack{
+                        RoundedRectangle(cornerSize: CGSize(width: 10.0, height: 15.0))
+                            .frame(width: 250,height: 35)
+                            .foregroundStyle(.blue)
+                        Text("Clothing")
+                            .foregroundStyle(.red)
+                            .font(.title)
+                    }
+                }
+            }
             
             
             
@@ -41,18 +84,25 @@ struct SearchView: View {
             Spacer()
             Spacer()
             Spacer()
-            NavigationLink {
+            Button {
+                if estValueSearch < 1 {
+                    estValueSearch = 1
+                }
                 
             } label: {
                 ZStack{
                     Circle()
                         .frame(width: 150)
-                    Text("See results")
+                    Text("Search")
                         .foregroundStyle(.red)
                         .font(.title2)
                 }
             }
+            
             Spacer()
+        }
+        .alert("Invalid search parameters", isPresented: $alertON) {
+            
         }
     }
 }
