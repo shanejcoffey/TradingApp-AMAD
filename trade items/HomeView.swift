@@ -26,22 +26,34 @@ struct HomeView: View {
                     signOut()
                 }
                 Spacer()
-                
-                NavigationLink {
-                    ListItemView()
-                } label: {
-                    ZStack{
-                        Circle()
-                            .frame(width: 150)
-                        Text("Post Item")
-                            .foregroundStyle(.red)
-                            .font(.title2)
-                    }
-                }
-                
                 HStack{
                     NavigationLink {
-                        ListedItemsView()
+                        ListItemView()
+                    } label: {
+                        ZStack{
+                            Circle()
+                                .frame(width: 150)
+                            Text("Post Item")
+                                .foregroundStyle(.red)
+                                .font(.title2)
+                        }
+                    }
+                    
+                    NavigationLink {
+                        SearchView()
+                    } label: {
+                        ZStack{
+                            Circle()
+                                .frame(width: 150)
+                            Text("Search Items")
+                                .foregroundStyle(.red)
+                                .font(.title2)
+                        }
+                    }
+                }
+                HStack{
+                    NavigationLink {
+                        OfferView()
                     } label: {
                         ZStack{
                             Circle()
