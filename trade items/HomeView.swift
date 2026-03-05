@@ -26,39 +26,15 @@ struct HomeView: View {
                     signOut()
                 }
                 Spacer()
+                
                 HStack{
                     NavigationLink {
-                        ListItemView()
+                        FindItemView()
                     } label: {
                         ZStack{
                             Circle()
                                 .frame(width: 150)
-                            Text("Post Item")
-                                .foregroundStyle(.red)
-                                .font(.title2)
-                        }
-                    }
-                    
-                    NavigationLink {
-                        SearchView()
-                    } label: {
-                        ZStack{
-                            Circle()
-                                .frame(width: 150)
-                            Text("Search Items")
-                                .foregroundStyle(.red)
-                                .font(.title2)
-                        }
-                    }
-                }
-                HStack{
-                    NavigationLink {
-                        OfferView()
-                    } label: {
-                        ZStack{
-                            Circle()
-                                .frame(width: 150)
-                            Text("Post Item")
+                            Text("See All Items")
                                 .foregroundStyle(.red)
                                 .font(.title2)
                         }
@@ -70,7 +46,7 @@ struct HomeView: View {
                         ZStack {
                             Circle()
                                 .frame(width: 150)
-                            Text("Find item")
+                            Text("Search Items")
                                 .foregroundStyle(.red)
                                 .font(.title2)
                         }
@@ -79,12 +55,12 @@ struct HomeView: View {
                 
                 HStack {
                     NavigationLink {
-                        ListedItemsView()
+                        ListItemView()
                     } label: {
                         ZStack {
                             Circle()
                                 .frame(width: 150)
-                            Text("See Offers")
+                            Text("Post Item")
                                 .foregroundStyle(.red)
                                 .font(.title2)
                         }
@@ -97,7 +73,7 @@ struct HomeView: View {
                         ZStack {
                             Circle()
                                 .frame(width: 150)
-                            Text("See listed items")
+                            Text("See Your Items")
                                 .foregroundStyle(.red)
                                 .font(.title2)
                         }
