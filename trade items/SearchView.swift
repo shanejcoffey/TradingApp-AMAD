@@ -6,6 +6,8 @@
 //
 
 import SwiftUI
+import FirebaseAuth
+import FirebaseDatabase
 
 struct SearchView: View {
     @State var alertON = false
@@ -89,11 +91,12 @@ struct SearchView: View {
                     estValueSearch = 1
                 }
                 
+                
             } label: {
                 ZStack{
                     Circle()
                         .frame(width: 150)
-                    Text("Search")
+                    Text("Find Items")
                         .foregroundStyle(.red)
                         .font(.title2)
                 }
@@ -103,6 +106,17 @@ struct SearchView: View {
         }
         .alert("Invalid search parameters", isPresented: $alertON) {
             
+        }
+    }
+    func filter(itemArray: [Item], name: String, category: String, estVal: Double){
+        
+        var arrayOUT: [Item] = []
+        for i in 0..<itemArray.count {
+            if name == itemArray[i].name{
+                arrayOUT.append(itemArray[i])
+            }else if name.startIndex == itemArray[i].name.startIndex {
+                arrayOUT.append(itemArray[i])
+            }
         }
     }
 }
