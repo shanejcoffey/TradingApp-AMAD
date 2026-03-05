@@ -112,9 +112,7 @@ struct SearchView: View {
         
         var arrayOUT: [Item] = []
         for i in 0..<itemArray.count {
-            if name == itemArray[i].name{
-                arrayOUT.append(itemArray[i])
-            }else if name.startIndex == itemArray[i].name.startIndex {
+            if itemArray[i].name.contains(name) && category == itemArray[i].category.rawValue && abs(itemArray[i].estimatedValue - estVal) < 10.0 {
                 arrayOUT.append(itemArray[i])
             }
         }
