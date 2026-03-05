@@ -59,7 +59,7 @@ class Item: ObservableObject {
         let newRef = ref.child("items").childByAutoId()
         key = newRef.key ?? ""
         newRef.setValue(toDict())
-        ref.child("users").child(uid).childByAutoId().setValue(key)
+        ref.child("users").child(uid).child("items").childByAutoId().setValue(key)
     }
     
     func delete() {

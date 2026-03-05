@@ -45,12 +45,14 @@ struct ListedItemsView: View {
         let itemsRef = ref.child("users").child(uid).child("items")
         
         itemsRef.observe(.childAdded) { snapshot in
-            guard let dict = snapshot.value as? [String: Any] else { return }
-            
-            let item = Item(dict: dict)
-            item.key = snapshot.key
-            
-            items.append(item)
+            guard let itemID = snapshot.value as? String else { return }
+                
+            ref.child("items").child(itemID).observeSingleEvent(of: .value) { snap in
+                guard let dict = snap.value as? [String: Any] else { return }
+                let item = Item(dict: dict)
+                item.key = itemID
+                items.append(item)
+            }
         }
         
         itemsRef.observe(.childRemoved) { snapshot in
@@ -59,13 +61,14 @@ struct ListedItemsView: View {
         }
         
         itemsRef.observe(.childChanged) { snapshot in
-            guard let dict = snapshot.value as? [String: Any] else { return }
+            guard let itemID = snapshot.value as? String else { return }
             
-            let key = snapshot.key
-            
-            if let index = items.firstIndex(where: {$0.key == key}) {
+            ref.child("items").child(itemID).observe(.value) { snap in
+                guard let dict = snap.value as? [String: Any] else { return }
+                guard let index = items.firstIndex(where: { $0.key == itemID }) else { return }
+                
                 let updatedItem = Item(dict: dict)
-                updatedItem.key = key
+                updatedItem.key = itemID
                 items[index] = updatedItem
             }
         }

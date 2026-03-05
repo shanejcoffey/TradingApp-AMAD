@@ -25,12 +25,6 @@ struct FindItemView: View {
             
             List(items, id: \.key) { item in
                 ItemView(item: item)
-                    .swipeActions {
-                        Button("Delete") {
-                            item.delete()
-                        }
-                        .tint(.red)
-                    }
             }
         }
         .onAppear {
@@ -38,42 +32,29 @@ struct FindItemView: View {
         }
     }
     
-    
-    /*
-     items
-     --item ids
-     users
-     --userid
-     ----items
-     ------itemIds
-     --------category
-     --------name
-     */
     func getItems() {
-        ref.child("items").observe(.childAdded) { snapshot,arg   in
-            guard let id = snapshot.value as? [String: Any] else { return } // id of the item
+        let itemsRef = ref.child("items")
+        
+        itemsRef.observe(.childAdded) { snapshot in
+            guard let dict = snapshot.value as? [String: Any] else { return }
+            if dict["email"] as? String == Auth.auth().currentUser?.email { return }
             
-            // let item = Item()
-            // item.key = snapshot.key
-            
-            // items.append(item)
+            var item = Item(dict: dict)
+            item.key = snapshot.key
+            items.append(item)
         }
         
-        ref.child("items").observe(.childRemoved) { snapshot in
-            // remove all items where the key == snapshot key
+        itemsRef.observe(.childRemoved) { snapshot in
             items.removeAll { $0.key == snapshot.key }
         }
         
-        ref.child("items").observe(.childChanged) { snapshot in
+        itemsRef.observe(.childChanged) { snapshot in
             guard let dict = snapshot.value as? [String: Any] else { return }
+            guard let index = items.firstIndex(where: { $0.key == snapshot.key }) else { return }
             
-            let key = snapshot.key
-            
-            if let index = items.firstIndex(where: {$0.key == key}) {
-                let updatedItem = Item(dict: dict)
-                updatedItem.key = key
-                items[index] = updatedItem
-            }
+            var updatedItem = Item(dict: dict)
+            updatedItem.key = snapshot.key
+            items[index] = updatedItem
         }
     }
 }
