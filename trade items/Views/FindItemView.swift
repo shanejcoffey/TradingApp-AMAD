@@ -28,6 +28,7 @@ struct FindItemView: View {
             }
         }
         .onAppear {
+            items.removeAll()
             getItems()
         }
     }
