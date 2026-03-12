@@ -29,16 +29,16 @@ struct HomeView: View {
             Spacer()
             
             TabView(selection: $selection) {
-                Tab("hello world", systemImage: "house", value: 0) {
-                    HomeScreenView()
+                Tab("Your items", systemImage: "sharedwithyou", value: 0) {
+                    ListedItemsView()
                 }
                 
                 Tab("Post", systemImage: "hare", value: 1) {
                     ListItemView()
                 }
                 
-                Tab("Your items", systemImage: "sharedwithyou", value: 2) {
-                    ListedItemsView()
+                Tab("hello world", systemImage: "house", value: 2) {
+                    HomeScreenView()
                 }
                 
                 Tab("Search", systemImage: "magnifyingglass", value: 3) {
