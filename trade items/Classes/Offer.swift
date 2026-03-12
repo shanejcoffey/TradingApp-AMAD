@@ -8,15 +8,15 @@
 import Foundation
 class Offer{
     
-    var itemTake: Item
-    var itemGive: Item
-    var valueGap = 0
+    var itemIN: Item
+    var itemOUT: Item
+    var valueGap = 0.0
     
-    init(itemTake: Item, itemGive: Item) {
-        self.itemTake = itemTake
-        self.itemGive = itemGive
+    init(itemIN: Item, itemOUT: Item) {
+        self.itemIN = itemIN
+        self.itemOUT = itemOUT
+        self.valueGap = abs(itemOUT.estimatedValue - itemIN.estimatedValue)
     }
-    
     
     
     
