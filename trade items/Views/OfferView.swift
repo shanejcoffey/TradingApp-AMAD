@@ -83,5 +83,7 @@ struct OfferView: View {
         
         offerRef.setValue(offerData)
         alertON = true
+        
+        let itemRef = ref.child("items").child(<#T##pathString: String##String#>)
     }
 }
