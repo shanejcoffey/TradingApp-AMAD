@@ -8,6 +8,8 @@
 import SwiftUI
 import FirebaseDatabase
 import FirebaseAuth
+import FirebaseCore
+import FirebaseStorage
 
 struct OffersView: View {
     
@@ -52,29 +54,32 @@ struct OffersView: View {
     func loadOffers() {
         
         loaded = true
-        
+        var dict : [String: Any]
         guard let myEmail = Auth.auth().currentUser?.email else { return }
+        dict = ["":3]
+        ref.child("offers").observe(.childAdded){snapshot in
+            
+            guard let doink = snapshot.value as? [String:Any] else { return }
+            dict = doink
+        }
         
-        ref.child("offers").observe(.childAdded) { snapshot in
-            
-            guard let dict = snapshot.value as? [String:Any] else { return }
-            
             var itemIN: Item
             var itemOUT: Item
             guard let offerIN = dict["offerIN"] as? String,
                   let offerOUT = dict["offerOUT"] as? String else { return }
             
             ref.child("items").child(offerIN).observeSingleEvent(of: .value) { snapIN in
-                
+                    
                 guard let dictIN = snapIN.value as? [String:Any] else { return }
                 
                 itemIN = Item(dict: dictIN)
                 itemIN.key = offerIN
                 
                 if itemIN.email != myEmail { return }
-            }
             
-            ref.child("items").child(offerOUT).observeSingleEvent(of: .value) { snapOUT in
+            
+            ref.child("items").child(offerOUT).
+            { snapOUT in
                 
                 guard let dictOUT = snapOUT.value as? [String:Any] else { return }
                 
@@ -84,6 +89,7 @@ struct OffersView: View {
                 let offer = Offer(itemIN: itemIN, itemOUT: itemOUT)
                 
                 offers.append(offer)
+                 
             }
         }
     }

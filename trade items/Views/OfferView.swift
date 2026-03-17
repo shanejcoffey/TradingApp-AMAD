@@ -13,7 +13,8 @@ struct OfferView: View {
     
     @State var selectedMyItemID = ""
     @State var selectedOtherItemID = ""
-    
+    @State var tempItemIN = Item(name: "Oxygen", category: ItemCategory(rawValue: "Sports")!, estimatedValue: 0.0, email: "")
+    @State var tempItemOUT = Item(name: "Carbon", category: ItemCategory(rawValue: "Sports")!, estimatedValue: 0.0, email: "")
     @State var showMyItems = false
     @State var showOtherItems = false
     
@@ -36,6 +37,7 @@ struct OfferView: View {
                             showOtherItems = true
                         } label: {
                             Text(selectedOtherItemID.isEmpty ? "Select Item" : selectedOtherItemID)
+                            ItemView(item: tempItemIN)
                         }
                     }
                     
@@ -47,6 +49,7 @@ struct OfferView: View {
                             showMyItems = true
                         } label: {
                             Text(selectedMyItemID.isEmpty ? "Select Item" : selectedMyItemID)
+                            ItemView(item: tempItemIN)
                         }
                     }
                 }
@@ -83,5 +86,7 @@ struct OfferView: View {
         
         offerRef.setValue(offerData)
         alertON = true
+        
+        let itemRef = ref.child("items").child(<#T##pathString: String##String#>)
     }
 }
