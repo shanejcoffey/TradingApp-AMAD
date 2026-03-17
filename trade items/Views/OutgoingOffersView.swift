@@ -18,7 +18,7 @@ struct OutgoingOffersView: View {
     
     var body: some View {
         NavigationStack {
-            Text("Incoming offers")
+            Text("Outgoing offers")
                 .font(.title)
             
             List(offers, id: \.id) { offer in

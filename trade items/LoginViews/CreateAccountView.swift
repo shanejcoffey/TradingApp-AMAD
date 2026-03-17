@@ -14,6 +14,7 @@ struct CreateAccountView: View {
     @State var errorMessage = ""
     @State var alertON = false
     @State var alertConfirm = false
+    @Environment(\.dismiss) private var dismiss
     var body: some View {
         NavigationStack{
             VStack {
@@ -73,7 +74,9 @@ struct CreateAccountView: View {
             
         }
         .alert("Account created", isPresented: $alertConfirm) {
-            
+            Button("Ok") {
+                dismiss()
+            }
         }
     }
 }
