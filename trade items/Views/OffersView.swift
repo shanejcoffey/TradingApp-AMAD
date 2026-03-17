@@ -8,8 +8,6 @@
 import SwiftUI
 import FirebaseDatabase
 import FirebaseAuth
-import FirebaseCore
-import FirebaseStorage
 
 struct OffersView: View {
     
