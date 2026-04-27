@@ -1,18 +1,18 @@
 //
-//  OfferInfoView.swift
+//  OfferInView.swift
 //  trade items
 //
-//  Created by SHANE COFFEY on 4/22/26.
+//  Created by SHANE COFFEY on 4/26/26.
 //
 
 import SwiftUI
 
-struct OfferInfoView: View {
+struct OfferInView: View {
     var body: some View {
         Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
     }
 }
 
 #Preview {
-    OfferInfoView()
+    OfferInView()
 }
