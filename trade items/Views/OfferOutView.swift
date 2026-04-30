@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct OfferInfoView: View {
+struct OfferOutView: View {
 
     @State var offer: Offer
 

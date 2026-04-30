@@ -22,7 +22,3 @@ struct FilteredItemsView: View {
         }
     }
 }
-
-#Preview {
-    FilteredItemsView(items: [Item(name: "test", category: .clothing, estimatedValue: 10, email: "test@gmail.com")])
-}

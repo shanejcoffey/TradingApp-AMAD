@@ -23,7 +23,25 @@ struct ItemView: View {
                 }
             
             VStack(alignment: .leading) {
+                
                 Spacer(minLength: 2)
+                
+                if item.imageStrings.count > 0 {
+                    TabView {
+                        ForEach(item.imageStrings, id: \.self) { base64 in
+                            if let uiImage = item.base64ToUIImage(base64) {
+                                Image(uiImage: uiImage)
+                                    .resizable()
+                                    .scaledToFill()
+                                    .clipped()
+                            }
+                        }
+                    }
+                    .frame(height: 120)
+                    .tabViewStyle(PageTabViewStyle())
+                    .cornerRadius(12)
+                }
+                
                 
                 Text("\(item.name)")
                     .font(.headline)
@@ -57,10 +75,6 @@ struct ItemView: View {
             }
             .padding(10)
         }
-        .frame(width: screenWidth * 0.4, height: screenWidth * 0.4 / 1.618)
+        .frame(width: screenWidth * 0.4, height: item.imageStrings.count > 0 ? 120 + screenWidth * 0.4 / 1.618 : screenWidth * 0.4 / 1.618)
     }
-}
-
-#Preview {
-    ItemView(item: Item(name: "Basketball", category: .sports, estimatedValue: 20, email: "test@gmail.com"))
 }

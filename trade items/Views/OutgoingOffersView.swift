@@ -22,26 +22,7 @@ struct OutgoingOffersView: View {
                 .font(.title)
             
             List(offers, id: \.id) { offer in
-                VStack(alignment: .leading, spacing: 10) {
-                    HStack {
-                        
-                        VStack {
-                            Text("You recieve:")
-                                .font(.headline)
-                            ItemView(item: offer.offerOUT)
-                        }
-                        
-                        Spacer()
-                        
-                        VStack {
-                            Text("You give:")
-                                .font(.headline)
-                            ItemView(item: offer.offerIN)
-                        }
-                    }
-                }
-                .padding()
-                .shadow(radius: 5)
+                OfferOutView(offer: offer)
             }
             .listStyle(.plain)
             .onAppear() {

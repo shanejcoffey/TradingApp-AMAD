@@ -24,6 +24,8 @@ struct FindItemView: View {
     @State var useEstimatedValue = false
     @State var useCategory = false
     
+    @State var firstItem: Item?
+    
     var body: some View {
         VStack {
             HStack {
@@ -80,9 +82,14 @@ struct FindItemView: View {
             
             for snap in snapshot.children.allObjects as! [DataSnapshot] {
                 if let dict = snap.value as? [String: Any], dict["email"] as? String != email {
-                    let item = Item(dict: dict)
-                    item.key = snap.key
-                    allItems.append(item)
+                    
+                    let key = snap.key
+                    
+                    if !allItems.contains(where: { $0.key == key }) {
+                        let item = Item(dict: dict)
+                        item.key = key
+                        allItems.append(item)
+                    }
                 }
             }
             items = allItems
@@ -92,12 +99,22 @@ struct FindItemView: View {
     
     func filter() {
         // items.filter does a loop and if its true then it keeps it
-        filtered = items.filter { item in
+        var result = items.filter { item in
             let matchesName = searchIN.isEmpty || item.name.lowercased().contains(searchIN.lowercased())
             let matchesValue = !useEstimatedValue || abs(estValIN - item.estimatedValue) <= 10
             let matchesCategory = !useCategory || item.category == categoryIN
             return matchesName && matchesCategory && matchesValue
         }
+        
+        print("firstItem: \(firstItem?.key ?? "no item")")
+        if let selected = firstItem,
+           let index = result.firstIndex(where: { $0.key == selected.key }) {
+            
+            let item = result.remove(at: index)
+            result.insert(item, at: 0)
+        }
+        
+        filtered = result
     }
 }
 

@@ -7,10 +7,14 @@
 
 import SwiftUI
 import FirebaseAuth
+import PhotosUI
 
 struct ListItemView: View {
     
     @Environment(\.dismiss) private var dismiss
+    
+    @State private var selectedImages: [PhotosPickerItem] = []
+    @State private var images: [Image] = []
     
     @State var nameIN = ""
     @State var estValueIN = 0.0
@@ -93,8 +97,31 @@ struct ListItemView: View {
                 .padding(.horizontal)
             }
             
+            TabView {
+                ForEach(0..<images.count, id: \.self) { i in
+                    images[i]
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 300, height: 300)
+                }
+            }
+            .tabViewStyle(PageTabViewStyle())
+            .onChange(of: selectedImages) {
+                Task {
+                    images.removeAll()
+                    
+                    for image in selectedImages {
+                        if let image = try? await image.loadTransferable(type: Image.self) {
+                            images.append(image)
+                        }
+                    }
+                }
+            }
+            
+            PhotosPicker("Select images", selection: $selectedImages, matching: .images)
+            
             Button {
-                let tempItem = Item(name: nameIN, category: categoryIN, estimatedValue: estValueIN, email: (Auth.auth().currentUser?.email)!)
+                let tempItem = Item(name: nameIN, category: categoryIN, estimatedValue: estValueIN, email: (Auth.auth().currentUser?.email)!, images: images)
                 tempItem.save()
                 alertON = true
             } label: {

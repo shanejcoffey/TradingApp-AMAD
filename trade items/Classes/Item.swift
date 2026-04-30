@@ -10,8 +10,7 @@ import Firebase
 import FirebaseCore
 import FirebaseAuth
 import FirebaseDatabase
-
-
+import SwiftUI
 
 // CaseIterable allows ItemCategory.allCases
 enum ItemCategory: String, Codable, CaseIterable {
@@ -38,13 +37,24 @@ class Item: ObservableObject, Identifiable {
     var category: ItemCategory
     var estimatedValue: Double
     var email: String
+    var imageStrings: [String]
     var key = ""
     
-    init(name: String, category: ItemCategory, estimatedValue: Double, email: String) {
+    @MainActor
+    init(name: String, category: ItemCategory, estimatedValue: Double, email: String, images: [Image]) {
         self.name = name
         self.category = category
         self.estimatedValue = estimatedValue
         self.email = email
+        self.imageStrings = []
+        
+        for image in images {
+            if let uiImage = convertToUIImage(image: image),
+               let data = uiImage.jpegData(compressionQuality: 0.3) {
+                let base64 = data.base64EncodedString()
+                imageStrings.append(base64)
+            }
+        }
     }
     //pull from FBase
     init(dict:[String : Any]){
@@ -53,6 +63,7 @@ class Item: ObservableObject, Identifiable {
         category = ItemCategory(rawValue: categoryString) ?? .sports
         estimatedValue = dict["estimatedValue"] as! Double
         email = dict["email"] as! String
+        imageStrings = dict["images"] as? [String] ?? []
     }
     
     func toDict() -> [String: Any] {
@@ -60,16 +71,18 @@ class Item: ObservableObject, Identifiable {
             "name": name,
             "category": category.rawValue,
             "estimatedValue": estimatedValue,
-            "email": email
+            "email": email,
+            "images": imageStrings
         ]
     }
     
-    func save(){
+    @MainActor func save(){
         guard let uid = Auth.auth().currentUser?.uid else { return }
         
         let newRef = ref.child("items").childByAutoId()
         key = newRef.key ?? ""
         newRef.setValue(toDict())
+        
         ref.child("users").child(uid).child("items").child(key).setValue(key)
     }
     
@@ -82,5 +95,15 @@ class Item: ObservableObject, Identifiable {
         guard let uid = Auth.auth().currentUser?.uid else { return }
         
         ref.child("items").child(key).updateChildValues(toDict())
+    }
+    
+    @MainActor func convertToUIImage(image: Image) -> UIImage? {
+        let renderer = ImageRenderer(content: image)
+        return renderer.uiImage
+    }
+    
+    func base64ToUIImage(_ base64: String) -> UIImage? {
+        guard let data = Data(base64Encoded: base64) else { return nil }
+        return UIImage(data: data)
     }
 }
