@@ -21,6 +21,9 @@ struct ListItemView: View {
     @State var categoryIN: ItemCategory = .clothing
     @State var alertON = false
     
+    @State private var showCamera = false
+    @State private var capturedImage: UIImage?
+    
     var body: some View {
         VStack(spacing: 24) {
             Text("List Item")
