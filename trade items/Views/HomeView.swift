@@ -40,12 +40,12 @@ struct HomeView: View {
             }
 
             TabView(selection: $selection) {
-                Tab("Outgoing", systemImage: "arrow.up.square.fill", value: 0) {
-                    OutgoingOffersView()
-                }
-
-                Tab("My Items", systemImage: "archivebox", value: 1) {
+                Tab("My Items", systemImage: "archivebox", value: 0) {
                     ListedItemsView()
+                }
+                
+                Tab("Chats", systemImage: "text.bubble", value: 1) {
+                    ChatsListView()
                 }
 
                 Tab("Home", systemImage: "house", value: 2) {

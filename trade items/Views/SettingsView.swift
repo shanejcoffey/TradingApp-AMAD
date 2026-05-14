@@ -17,7 +17,9 @@ struct SettingsView: View {
     var body: some View {
         List {
             Section(header: Text("User info")) {
-                Text("User info")
+                if let email = Auth.auth().currentUser?.email {
+                    Text("email: \(email)")
+                }
             }
 
             Section(header: Text("Account actions")) {

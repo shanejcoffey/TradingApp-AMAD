@@ -27,9 +27,10 @@ struct WelcomeView: View {
 
     var body: some View {
         VStack {
+            
             Text("Item Trader")
                 .font(.largeTitle)
-
+            
             Spacer()
             if let item = item {
                 Text("For you")

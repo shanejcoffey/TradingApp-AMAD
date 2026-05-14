@@ -12,44 +12,50 @@ import SwiftUI
 struct OffersView: View {
 
     let ref = Database.database().reference()
-
+    @State private var path = NavigationPath()
     var screenWidth: CGFloat = UIScreen.main.bounds.width
 
     @State var offers: [Offer] = []
-
     @State var firstOffer: Offer?
 
     var body: some View {
-        NavigationStack {
-            Text("Incoming offers")
-                .font(.title)
-
-            List(offers, id: \.id) { offer in
-                VStack(alignment: .leading, spacing: 10) {
-
-                    OfferInView(offer: offer)
-
-                    HStack {
-                        Button("Accept") {
-                            acceptOffer(offer)
+        NavigationStack(path: $path) {
+            VStack {
+                Text("Incoming offers")
+                    .font(.title)
+                
+                List(offers, id: \.id) { offer in
+                    VStack(alignment: .leading, spacing: 10) {
+                        
+                        OfferInView(offer: offer)
+                        
+                        HStack {
+                            Button {
+                                path.append(offer.id)
+                            } label: {
+                                Text("Chat")
+                                    .frame(maxWidth: .infinity)
+                            }
+                            .buttonStyle(.borderedProminent)
+                            .tint(.blue)
+                            
+                            Button {
+                                declineOffer(offer)
+                            } label: {
+                                Text("Decline")
+                                    .frame(maxWidth: .infinity)
+                            }
+                            .buttonStyle(.borderedProminent)
+                            .tint(.red)
                         }
-                        .buttonStyle(.borderedProminent)
-                        .tint(.green)
-                        .frame(maxWidth: .infinity)
-
-                        Spacer()
-
-                        Button("Decline") {
-                            declineOffer(offer)
-                        }
-                        .buttonStyle(.borderedProminent)
-                        .tint(.red)
-                        .frame(maxWidth: .infinity)
                     }
+                    .padding()
                 }
-                .padding()
+                .navigationDestination(for: String.self) { offerID in
+                    ChatView(offerID: offerID)
+                }
+                .listStyle(.plain)
             }
-            .listStyle(.plain)
             .onAppear {
                 offers.removeAll()
                 loadOffers()
